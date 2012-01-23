@@ -25,6 +25,7 @@
 #include <linux/kd.h>
 #include <pixelflinger/pixelflinger.h>
 
+
 #if defined(PIXELS_BGRA)
 # define PIXEL_FORMAT GGL_PIXEL_FORMAT_BGRA_8888
 # define PIXEL_SIZE   4
@@ -42,6 +43,14 @@
 # define PIXEL_FORMAT GGL_PIXEL_FORMAT_RGB_565
 # define PIXEL_SIZE   2
 #endif
+
+
+
+#if defined(SPYDER_HARDWARE)
+# define PIXEL_FORMAT GGL_PIXEL_FORMAT_RGB_565
+# define PIXEL_SIZE   4
+#endif
+
 
 #include "font_10x18.h"
 #include "minui.h"
@@ -268,6 +277,25 @@ static void set_final_framebuffer(void)
     }
 }
 
+void gr_flip_32(unsigned *bits, unsigned short *ptr, unsigned count)
+{
+   unsigned i=0;
+   while (i<count) {
+        uint32_t rgb32, red, green, blue, alpha;
+
+        /* convert 16 bits to 32 bits */
+        rgb32 = ptr[i];
+        red = (rgb32 & 0x1f) << 3; // shift left 3 for full precision
+        green = (rgb32 & 0x7E0) << 5; // shift right 5 to align, shift left 2 for full precision, shift left 8 for rgb
+        blue = (rgb32 & 0xF800) << 8; // shift right 11 to aligh, shift left 3 for full precision, left 16 for rgb 
+
+        rgb32 = 0xFF000000 | red | green | blue;
+        android_memset32((uint32_t *)bits, rgb32, 4);
+        i++;
+        bits++;
+    }
+}
+
 void gr_flip(void)
 {
     GGLContext *gl = gr_context;
@@ -277,9 +305,22 @@ void gr_flip(void)
 
     /* copy data from the in-memory surface to the buffer we're about
      * to make active. */
-    memcpy(gr_framebuffer[gr_active_fb].data, gr_mem_surface.data,
-           vi.yres * fi.line_length);
+    //memcpy(gr_framebuffer[gr_active_fb].data, gr_mem_surface.data,
+     //      vi.yres * fi.line_length);
 
+    //if( vi.bits_per_pixel == 16)
+    if( PIXEL_SIZE*8 == 16)
+    {
+	memcpy(gr_framebuffer[gr_active_fb].data, gr_mem_surface.data,
+		      fi.line_length * vi.yres);
+    }
+    else
+    {
+        gr_flip_32( (unsigned *)gr_framebuffer[gr_active_fb].data, 
+                   (unsigned short *)gr_mem_surface.data, 
+                   ((fi.line_length /PIXEL_SIZE) * vi.yres) );
+                   //((fi.line_length / (vi.bits_per_pixel / 8)) * vi.yres));
+    }
     /* inform the display driver */
     set_active_framebuffer(gr_active_fb);
 }

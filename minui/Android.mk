@@ -26,6 +26,11 @@ ifeq ($(TARGET_RECOVERY_PIXEL_FORMAT),"RGBX_8888")
     LOCAL_CFLAGS += -DPIXELS_RGBX
 endif
 
+ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),"spyder")
+    LOCAL_CFLAGS += -DSPYDER_HARDWARE
+endif
+  
+
 # Reversed 16bits RGB (ics software gralloc)
 #LOCAL_CFLAGS += -DPIXELS_BGR_16BPP
 
