@@ -4,7 +4,14 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_SRC_FILES := graphics.c events.c resources.c
+LOCAL_SRC_FILES := events.c resources.c
+
+ifneq ($(BOARD_CUSTOM_BOOTMENU_GRAPHICS),)
+  LOCAL_SRC_FILES += $(BOARD_CUSTOM_BOOTMENU_GRAPHICS)
+else
+  LOCAL_SRC_FILES += graphics.c
+endif
+
 
 LOCAL_C_INCLUDES +=\
     external/libpng\
@@ -26,10 +33,9 @@ ifeq ($(TARGET_RECOVERY_PIXEL_FORMAT),"RGBX_8888")
     LOCAL_CFLAGS += -DPIXELS_RGBX
 endif
 
-ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),"spyder")
-    LOCAL_CFLAGS += -DSPYDER_HARDWARE
+ifeq ($(TARGET_RECOVERY_PIXEL_FORMAT),"RGB_565")
+    LOCAL_CFLAGS += -DPIXELS_RGB565
 endif
-  
 
 # Reversed 16bits RGB (ics software gralloc)
 #LOCAL_CFLAGS += -DPIXELS_BGR_16BPP
