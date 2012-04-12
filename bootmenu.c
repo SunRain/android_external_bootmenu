@@ -77,6 +77,8 @@ char** prepend_title(const char** headers) {
 
   char* title[] = {
       "Android Bootmenu v" BOOTMENU_VERSION,
+      "MagicMod Special Version By SunRain",
+      "Powered by 591fan.com",
       "",
       NULL
   };
