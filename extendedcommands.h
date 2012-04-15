@@ -37,7 +37,7 @@ static const char *FILE_POST_MENU = BM_ROOTDIR "/script/post_bootmenu.sh";
 
 static const char *FILE_2NDINIT   = BM_ROOTDIR "/script/2nd-init.sh";
 #ifdef ONLY_2NDINIT
-static const char *FILE_2NDBOOT　= BM_ROOTDIR "/script/2nd-init.sh";
+static const char *FILE_2NDBOOT   = BM_ROOTDIR "/script/2nd-init.sh";
 static const char *FILE_2NDSYSTEM = BM_ROOTDIR "/script/2nd-init.sh";
 static const char *FILE_STOCK     = BM_ROOTDIR "/script/2nd-init.sh";
 #else
