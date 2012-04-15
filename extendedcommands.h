@@ -23,6 +23,10 @@
 #define BOOTMODE_CONFIG_FILE "/cache/recovery/bootmode.conf"
 #endif
 
+// whenever choose the 2nd-init/ 2nd-system/ 2nd-bootmenu
+// all of them is 2nd-init
+#define ONLY_2NDINIT
+
 // one or 2 recovery binaries
 #if !STOCK_VERSION
 #define USE_STABLE_RECOVERY
@@ -32,9 +36,15 @@ static const char *FILE_PRE_MENU  = BM_ROOTDIR "/script/pre_bootmenu.sh";
 static const char *FILE_POST_MENU = BM_ROOTDIR "/script/post_bootmenu.sh";
 
 static const char *FILE_2NDINIT   = BM_ROOTDIR "/script/2nd-init.sh";
+#ifdef ONLY_2NDINIT
+static const char *FILE_2NDBOOT　= BM_ROOTDIR "/script/2nd-init.sh";
+static const char *FILE_2NDSYSTEM = BM_ROOTDIR "/script/2nd-init.sh";
+static const char *FILE_STOCK     = BM_ROOTDIR "/script/2nd-init.sh";
+#else
 static const char *FILE_2NDBOOT   = BM_ROOTDIR "/script/2nd-boot.sh";
 static const char *FILE_2NDSYSTEM = BM_ROOTDIR "/script/2nd-system.sh";
 static const char *FILE_STOCK     = BM_ROOTDIR "/script/stock.sh";
+#endif
 static const char *FILE_ADBD      = BM_ROOTDIR "/script/adbd.sh";
 static const char *FILE_SDCARD    = BM_ROOTDIR "/script/sdcard.sh";
 static const char *FILE_CDROM     = BM_ROOTDIR "/script/cdrom.sh";
