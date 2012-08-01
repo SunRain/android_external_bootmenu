@@ -456,7 +456,7 @@ static int run_bootmenu(void) {
 int main(int argc, char **argv) {
   int result;
 
-  if (NULL != strstr(executable, "hijack")) {
+  if (NULL != strstr(argv[0], "hijack")) {
     //when ln -s bootmenu hijack, we can use busybox cmd
     if (argc >= 2) {
       return busybox_driver(argc - 1, argv + 1);
