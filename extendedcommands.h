@@ -25,7 +25,7 @@
 
 // whenever choose the 2nd-init/ 2nd-system/ 2nd-bootmenu
 // all of them is 2nd-init
-#define ONLY_2NDINIT
+//#define ONLY_2NDINIT
 
 // one or 2 recovery binaries
 #if !STOCK_VERSION
