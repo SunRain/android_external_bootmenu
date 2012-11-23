@@ -8,6 +8,10 @@ include $(CLEAR_VARS)
 
 bootmenu_local_path := $(LOCAL_PATH)
 
+
+LOCAL_C_INCLUDES += \
+    bionic/libc/bionic
+    
 bootmenu_sources := \
     extendedcommands.c \
     overclock.c \
@@ -67,6 +71,11 @@ ifneq ($(BOARD_DEFY_MODEL),DEFY_FROYO)
     EXTRA_CFLAGS += -DUSE_4_CLOCK_LEVELS
 endif
 
+# for lge p880 hack
+ifeq ($(TARGET_BOOTLOADER_BOARD_NAME), x3)
+    EXTRA_CFLAGS += DDEVICE_X3
+endif  
+
 ######################################
 # Cyanogen version
 
@@ -115,6 +124,8 @@ BOOTMENU_SUFFIX := -$(TARGET_BOOTLOADER_BOARD_NAME)
 LOCAL_CFLAGS := \
     -DBOOTMENU_VERSION="\"${BOOTMENU_VERSION}${BOOTMENU_SUFFIX}\"" -DSTOCK_VERSION=1 \
     -DMAX_ROWS=44 -DMAX_COLS=96 ${EXTRA_CFLAGS}
+
+LOCAL_CFLAGS += DDEVICE_X3
 
 LOCAL_STATIC_LIBRARIES := libminui_bm libpixelflinger_static libpng libz
 LOCAL_STATIC_LIBRARIES += libstdc++ libc libcutils

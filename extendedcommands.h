@@ -25,7 +25,7 @@
 
 // whenever choose the 2nd-init/ 2nd-system/ 2nd-bootmenu
 // all of them is 2nd-init
-//#define ONLY_2NDINIT
+#define ONLY_2NDINIT
 
 // one or 2 recovery binaries
 #if !STOCK_VERSION
@@ -115,5 +115,7 @@ int log_dumpfile(char * file);
 
 int set_usb_device_mode(const char *mode);
 int mount_usb_storage(const char *part);
+
+int mount_main(int argc, char *argv[]);
 
 #endif // EXTENDED_COMMAND_H
