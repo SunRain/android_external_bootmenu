@@ -27,6 +27,8 @@
 // all of them is 2nd-init
 #define ONLY_2NDINIT
 
+#define DEVICE_X3
+
 // one or 2 recovery binaries
 #if !STOCK_VERSION
 #define USE_STABLE_RECOVERY
