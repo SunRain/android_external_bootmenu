@@ -280,7 +280,7 @@ static int wait_key(int key) {
       break;
     }
     else {
-      usleep(15000); //15ms * 100
+      usleep(150000); //15ms * 100
     }
   }
   evt_exit();
@@ -458,14 +458,31 @@ int main(int argc, char **argv) {
 
   if (NULL != strstr(argv[0], "hijack")) {
     //when ln -s bootmenu hijack, we can use busybox cmd
+   //EG: hijack foo ..." is equivalent to "foo ..."
     if (argc >= 2) {
       return busybox_driver(argc - 1, argv + 1);
     }
     fprintf(stdout, "use hijack [cmds of busybox].\n");
     return 0;
-  }	
+  }
   
-  
+/*#ifdef DEVICE_X3
+  if (NULL != strstr(argv[0], "mount")) {
+    // hack for lge p880 init.*.rc
+    //mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/UDA /data wait noatime nosuid nodev barrier=1,nomblk_io_submit,data=ordered,nodelalloc,errors=continue
+    if (0 == strcmp(argv[2], "/dev/block/platform/sdhci-tegra.3/by-name/UDA")) {
+	fprintf(stdout, "boot menu argv is [%s].\n", argv[0]);
+        result = run_bootmenu();
+        mount_main(argc, argv);
+        bypass_sign("no");
+        sync();
+        return result;
+    }
+    fprintf(stdout, "This is mount hack for lge p880.\n");
+    return mount_main(argc, argv);
+  }
+#endif
+*/
   if (argc == 2 && 0 == strcmp(argv[1], "postbootmenu")) {
 
     /* init.rc call: "exec bootmenu postbootmenu" */
@@ -504,6 +521,16 @@ int main(int argc, char **argv) {
     sync();
     return result;
   }
+#ifdef DEVICE_X3
+ //exec /system/bin/logwrapper mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/UDA /data 
+  else if (argc >= 4 && 0 == strcmp(argv[3], "/dev/block/platform/sdhci-tegra.3/by-name/UDA")) {
+        result = run_bootmenu();
+        real_execute(argc, argv);
+        bypass_sign("no");
+        sync();
+        return result;
+    }
+#endif
   else if (argc >= 3 && 0 == strcmp(argv[2], "pds")) {
 
     /* kept for stock rom compatibility, please use postbootmenu parameter */

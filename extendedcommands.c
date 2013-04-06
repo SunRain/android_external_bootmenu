@@ -877,11 +877,15 @@ int next_bootmode_write(const char* str) {
  */
 int led_alert(const char* color, int value) {
   char led_path[PATH_MAX];
+  #ifndef DEVICE_X3
   sprintf(led_path, "/sys/class/leds/%s/brightness", color);
+  #else
+  sprintf(led_path, "/sys/class/leds/button-backlight/brightness");
+  #endif 
   FILE* f = fopen(led_path, "w");
 
   if (f != NULL) {
-    fprintf(f, "%d", value);
+    fprintf(f, "%d", value>1?1:value);
     fclose(f);
     return 0;
   }

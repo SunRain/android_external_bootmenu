@@ -46,7 +46,6 @@
 
 #define NUM_BUFFERS 2
 
-#include "font_10x18.h"
 #include "minui.h"
 #include "font_10x18.h"
 #include "roboto_15x24.h"
@@ -57,7 +56,6 @@
 static struct UiFont FONTS[3];
 static int selectedFont = FONT_HEAD;
 static GGLContext *gr_context = 0;
-static GGLSurface gr_font_texture;
 static GGLSurface gr_framebuffer[NUM_BUFFERS];
 static GGLSurface gr_mem_surface;
 static unsigned gr_active_fb = 0;
